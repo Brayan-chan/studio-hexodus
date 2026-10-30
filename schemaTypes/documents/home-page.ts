@@ -1,0 +1,197 @@
+import {HomeIcon} from '@sanity/icons/Home'
+import {defineArrayMember, defineField, defineType} from 'sanity'
+
+const sectionHeadingFields = [
+  defineField({name: 'label', title: 'Etiqueta de sección', type: 'string', validation: (rule) => rule.required().max(60)}),
+  defineField({name: 'heading', title: 'Título', type: 'string', validation: (rule) => rule.required().max(90)}),
+  defineField({name: 'highlight', title: 'Texto destacado', type: 'string', validation: (rule) => rule.required().max(70)}),
+  defineField({name: 'intro', title: 'Introducción', type: 'text', rows: 3, validation: (rule) => rule.required().max(320)}),
+]
+
+export const homePage = defineType({
+  name: 'homePage',
+  title: 'Página de inicio',
+  type: 'document',
+  icon: HomeIcon,
+  groups: [
+    {name: 'hero', title: 'Portada', default: true},
+    {name: 'sections', title: 'Secciones'},
+    {name: 'conversion', title: 'Conversión'},
+    {name: 'seo', title: 'SEO'},
+  ],
+  fields: [
+    defineField({
+      name: 'hero',
+      title: 'Portada',
+      type: 'object',
+      group: 'hero',
+      fields: [
+        defineField({name: 'eyebrow', title: 'Antetítulo', type: 'string', validation: (rule) => rule.required().max(100)}),
+        defineField({name: 'heading', title: 'Título principal', type: 'string', validation: (rule) => rule.required().max(60)}),
+        defineField({name: 'highlight', title: 'Título destacado', type: 'string', validation: (rule) => rule.required().max(60)}),
+        defineField({name: 'copy', title: 'Descripción', type: 'text', rows: 4, validation: (rule) => rule.required().max(420)}),
+        defineField({name: 'primaryCta', title: 'Botón principal', type: 'callToAction', validation: (rule) => rule.required()}),
+        defineField({name: 'secondaryCta', title: 'Botón secundario', type: 'callToAction', validation: (rule) => rule.required()}),
+        defineField({name: 'signature', title: 'Valores', type: 'string', validation: (rule) => rule.required().max(100)}),
+        defineField({name: 'signatureStrong', title: 'Cierre', type: 'string', validation: (rule) => rule.required().max(80)}),
+      ],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'benefits',
+      title: 'Beneficios de la franja',
+      type: 'array',
+      group: 'sections',
+      of: [
+        defineArrayMember({
+          name: 'benefit',
+          title: 'Beneficio',
+          type: 'object',
+          fields: [
+            defineField({name: 'title', title: 'Título', type: 'string', validation: (rule) => rule.required().max(55)}),
+            defineField({name: 'subtitle', title: 'Descripción', type: 'string', validation: (rule) => rule.required().max(65)}),
+          ],
+          preview: {select: {title: 'title', subtitle: 'subtitle'}},
+        }),
+      ],
+      validation: (rule) => rule.required().min(4).max(6),
+    }),
+    defineField({
+      name: 'experience',
+      title: 'Beneficios Hexodus',
+      type: 'object',
+      group: 'sections',
+      fields: [
+        ...sectionHeadingFields,
+        defineField({
+          name: 'cards',
+          title: 'Servicios y beneficios',
+          type: 'array',
+          of: [
+            defineArrayMember({
+              name: 'experienceCard',
+              title: 'Tarjeta',
+              type: 'object',
+              fields: [
+                defineField({name: 'title', title: 'Título', type: 'string', validation: (rule) => rule.required()}),
+                defineField({name: 'description', title: 'Descripción', type: 'text', rows: 3, validation: (rule) => rule.required().max(220)}),
+                defineField({name: 'image', title: 'Imagen', type: 'accessibleImage'}),
+                defineField({name: 'visualLabel', title: 'Recurso tipográfico', type: 'string', validation: (rule) => rule.max(12)}),
+              ],
+              preview: {select: {title: 'title', subtitle: 'description', media: 'image'}},
+            }),
+          ],
+          validation: (rule) => rule.required().min(3).max(8),
+        }),
+      ],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'membershipsIntro',
+      title: 'Introducción a membresías',
+      type: 'object',
+      group: 'sections',
+      fields: sectionHeadingFields,
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'philosophy',
+      title: 'Nosotros / filosofía',
+      type: 'object',
+      group: 'sections',
+      fields: [
+        defineField({name: 'label', title: 'Etiqueta de sección', type: 'string', validation: (rule) => rule.required()}),
+        defineField({name: 'heading', title: 'Primera línea', type: 'string', validation: (rule) => rule.required()}),
+        defineField({name: 'headingSecond', title: 'Segunda línea', type: 'string', validation: (rule) => rule.required()}),
+        defineField({name: 'highlight', title: 'Texto destacado', type: 'string', validation: (rule) => rule.required()}),
+        defineField({name: 'copy', title: 'Descripción principal', type: 'text', rows: 4, validation: (rule) => rule.required().max(420)}),
+        defineField({name: 'subcopy', title: 'Descripción secundaria', type: 'text', rows: 3, validation: (rule) => rule.required().max(280)}),
+        defineField({name: 'image', title: 'Imagen', type: 'accessibleImage', validation: (rule) => rule.required()}),
+        defineField({name: 'badgeLabel', title: 'Etiqueta sobre imagen', type: 'string', validation: (rule) => rule.required()}),
+        defineField({name: 'badgeText', title: 'Mensaje sobre imagen', type: 'string', validation: (rule) => rule.required()}),
+        defineField({name: 'years', title: 'Años de comunidad', type: 'number', validation: (rule) => rule.required().integer().min(0).max(99)}),
+        defineField({name: 'cta', title: 'Botón', type: 'callToAction', validation: (rule) => rule.required()}),
+      ],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'team',
+      title: 'Equipo',
+      type: 'object',
+      group: 'sections',
+      fields: [
+        ...sectionHeadingFields,
+        defineField({name: 'image', title: 'Imagen general', type: 'accessibleImage', validation: (rule) => rule.required()}),
+        defineField({name: 'cta', title: 'Botón', type: 'callToAction', validation: (rule) => rule.required()}),
+      ],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'galleryIntro',
+      title: 'Galería del inicio',
+      type: 'object',
+      group: 'sections',
+      fields: sectionHeadingFields,
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'community',
+      title: 'Comunidad y reseñas',
+      type: 'object',
+      group: 'sections',
+      fields: [
+        ...sectionHeadingFields,
+        defineField({name: 'cardTitle', title: 'Título de la tarjeta', type: 'string', validation: (rule) => rule.required()}),
+        defineField({name: 'cardCopy', title: 'Texto de la tarjeta', type: 'text', rows: 3, validation: (rule) => rule.required()}),
+        defineField({name: 'buttonLabel', title: 'Texto del botón', type: 'string', validation: (rule) => rule.required()}),
+      ],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'faq',
+      title: 'Preguntas frecuentes',
+      type: 'object',
+      group: 'conversion',
+      fields: [
+        ...sectionHeadingFields,
+        defineField({name: 'buttonLabel', title: 'Texto del botón', type: 'string', validation: (rule) => rule.required()}),
+        defineField({
+          name: 'items',
+          title: 'Preguntas',
+          type: 'array',
+          of: [
+            defineArrayMember({
+              name: 'faqItem',
+              title: 'Pregunta',
+              type: 'object',
+              fields: [
+                defineField({name: 'question', title: 'Pregunta', type: 'string', validation: (rule) => rule.required().max(160)}),
+                defineField({name: 'answer', title: 'Respuesta', type: 'text', rows: 4, validation: (rule) => rule.required().max(600)}),
+              ],
+              preview: {select: {title: 'question', subtitle: 'answer'}},
+            }),
+          ],
+          validation: (rule) => rule.required().min(1).max(12),
+        }),
+      ],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'finalCta',
+      title: 'Llamado a la acción final',
+      type: 'object',
+      group: 'conversion',
+      fields: [
+        defineField({name: 'eyebrow', title: 'Antetítulo', type: 'string', validation: (rule) => rule.required()}),
+        defineField({name: 'heading', title: 'Título', type: 'string', validation: (rule) => rule.required()}),
+        defineField({name: 'highlight', title: 'Texto destacado', type: 'string', validation: (rule) => rule.required()}),
+        defineField({name: 'copy', title: 'Descripción', type: 'text', rows: 4, validation: (rule) => rule.required().max(380)}),
+        defineField({name: 'primaryCta', title: 'Botón principal', type: 'callToAction', validation: (rule) => rule.required()}),
+        defineField({name: 'secondaryCta', title: 'Botón secundario', type: 'callToAction', validation: (rule) => rule.required()}),
+      ],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({name: 'seo', title: 'SEO', type: 'seo', group: 'seo', validation: (rule) => rule.required()}),
+  ],
+  preview: {prepare: () => ({title: 'Página de inicio'})},
+})
