@@ -9,12 +9,17 @@
     "deploy": "sanity deploy",
     "deploy-graphql": "sanity graphql deploy",
     "dev": "sanity dev",
-    "start": "sanity start"
+    "start": "sanity start",
+    "schema:deploy": "sanity schemas deploy",
+    "content:generate": "node migration/scripts/generate-import.mjs",
+    "content:validate": "node migration/scripts/validate-import.mjs",
+    "content:import": "sanity dataset import migration/generated/hexodus.ndjson production --replace"
   },
   "keywords": [
     "sanity"
   ],
   "dependencies": {
+    "@sanity/icons": "^5.2.3",
     "@sanity/vision": "^6.21.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
