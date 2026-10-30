@@ -1,0 +1,131 @@
+import {CogIcon} from '@sanity/icons/Cog'
+import {defineArrayMember, defineField, defineType} from 'sanity'
+
+export const siteSettings = defineType({
+  name: 'siteSettings',
+  title: 'Configuración general',
+  type: 'document',
+  icon: CogIcon,
+  groups: [
+    {name: 'identity', title: 'Identidad', default: true},
+    {name: 'contact', title: 'Contacto'},
+    {name: 'hours', title: 'Horarios'},
+    {name: 'approval', title: 'Verificación'},
+  ],
+  fields: [
+    defineField({
+      name: 'name',
+      title: 'Nombre del gimnasio',
+      type: 'string',
+      group: 'identity',
+      validation: (rule) => rule.required().max(80),
+    }),
+    defineField({
+      name: 'city',
+      title: 'Ciudad',
+      type: 'string',
+      group: 'identity',
+      validation: (rule) => rule.required().max(80),
+    }),
+    defineField({
+      name: 'footerTagline',
+      title: 'Frase del pie de página',
+      type: 'text',
+      rows: 2,
+      group: 'identity',
+      validation: (rule) => rule.required().max(120),
+    }),
+    defineField({
+      name: 'phoneE164',
+      title: 'WhatsApp / teléfono',
+      type: 'string',
+      description: 'Formato internacional, por ejemplo +529811234567.',
+      group: 'contact',
+      validation: (rule) =>
+        rule.required().regex(/^\+52\d{10}$/, {name: 'teléfono mexicano en formato +52'}),
+    }),
+    defineField({
+      name: 'landmark',
+      title: 'Referencia de ubicación',
+      type: 'string',
+      group: 'contact',
+      validation: (rule) => rule.required().max(120),
+    }),
+    defineField({
+      name: 'addressLines',
+      title: 'Dirección',
+      type: 'array',
+      group: 'contact',
+      of: [defineArrayMember({type: 'string'})],
+      validation: (rule) => rule.required().min(1).max(5),
+    }),
+    defineField({
+      name: 'mapsUrl',
+      title: 'Enlace de Google Maps',
+      type: 'url',
+      group: 'contact',
+      validation: (rule) => rule.required().uri({scheme: ['https']}),
+    }),
+    defineField({
+      name: 'mapsEmbedUrl',
+      title: 'URL para mapa incrustado',
+      type: 'url',
+      group: 'contact',
+      validation: (rule) => rule.required().uri({scheme: ['https']}),
+    }),
+    defineField({
+      name: 'hours',
+      title: 'Horarios',
+      type: 'object',
+      group: 'hours',
+      fields: [
+        defineField({
+          name: 'weekdays',
+          title: 'Lunes a viernes',
+          type: 'string',
+          validation: (rule) => rule.required(),
+        }),
+        defineField({
+          name: 'saturday',
+          title: 'Sábados',
+          type: 'string',
+          validation: (rule) => rule.required(),
+        }),
+        defineField({
+          name: 'sunday',
+          title: 'Domingos',
+          type: 'string',
+          validation: (rule) => rule.required(),
+        }),
+      ],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'headerCta',
+      title: 'Botón principal del encabezado',
+      type: 'callToAction',
+      group: 'identity',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'contentApproval',
+      title: 'Datos verificados con el negocio',
+      type: 'object',
+      group: 'approval',
+      description: 'Activa cada opción únicamente después de confirmarla con el cliente.',
+      fields: [
+        defineField({name: 'phone', title: 'Teléfono', type: 'boolean', initialValue: false}),
+        defineField({name: 'address', title: 'Dirección', type: 'boolean', initialValue: false}),
+        defineField({name: 'maps', title: 'Google Maps', type: 'boolean', initialValue: false}),
+        defineField({name: 'hours', title: 'Horarios', type: 'boolean', initialValue: false}),
+        defineField({
+          name: 'membershipPrices',
+          title: 'Precios de membresías',
+          type: 'boolean',
+          initialValue: false,
+        }),
+      ],
+    }),
+  ],
+  preview: {prepare: () => ({title: 'Configuración general de Hexodus'})},
+})
