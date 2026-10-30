@@ -27,3 +27,7 @@
 
 # Dotenv and similar local-only files
 *.local
+
+# Generated migration artifacts
+/migration/generated
+/migration/reports
